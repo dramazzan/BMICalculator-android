@@ -31,11 +31,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun calculateBMI() {
-        // Get input values
         val weightStr = weightEditText.text.toString()
         val heightStr = heightEditText.text.toString()
 
-        // Validate inputs
         if (weightStr.isEmpty()) {
             weightEditText.error = "Введите вес"
             return
@@ -46,25 +44,21 @@ class MainActivity : AppCompatActivity() {
         }
 
         try {
-            // Parse values
             val weight = weightStr.toDouble()
             val height = heightStr.toDouble()
 
-            // Validate positive values
             if (weight <= 0) {
-                weightEditText.error = "Weight must be positive"
+                weightEditText.error = "Вес должен быть положительным"
                 return
             }
             if (height <= 0) {
-                heightEditText.error = "Height must be positive"
+                heightEditText.error = "Рост должна быть положительной"
                 return
             }
 
-            // Calculate BMI
             val bmi = weight / ((height / 100).pow(2))
             val bmiRounded = BigDecimal(bmi).setScale(2, RoundingMode.HALF_UP).toDouble()
 
-            // Determine category and color
             val (category, colorRes) = when {
                 bmiRounded < 18.5 -> Pair("Недостаточный вес\n", R.color.underweight)
                 bmiRounded <= 24.9 -> Pair("Нормальный вес\n", R.color.normal)
@@ -72,12 +66,10 @@ class MainActivity : AppCompatActivity() {
                 else -> Pair("Ожирение\n", R.color.obese)
             }
 
-            // Display result
             resultTextView.text = "BMI: $bmiRounded - $category"
             resultTextView.setTextColor(ContextCompat.getColor(this, colorRes))
 
         } catch (e: NumberFormatException) {
-            // Handle invalid number format
             weightEditText.error = "Invalid number"
             heightEditText.error = "Invalid number"
         }
